@@ -1,0 +1,8 @@
+name: mmoPet
+main: mmo.Pet.mmoPet
+version: 0.1
+website:
+author: Rycochet <rycochet@rycochet.com>
+depend: [mmoCore]
+
+description: Display pet names above them.
