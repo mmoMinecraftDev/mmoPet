@@ -1,7 +1,7 @@
 name: mmoPet
 main: mmo.Pet.mmoPet
-version: 0.1
-website:
+version: 0.2
+website: http://forums.bukkit.org/threads/33291/
 author: Rycochet <rycochet@rycochet.com>
 depend: [mmoCore]
 

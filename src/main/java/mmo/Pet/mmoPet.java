@@ -82,23 +82,30 @@ public class mmoPet extends JavaPlugin {
 		mmo.mmoPet = false;
 	}
 
-	public class mmoPetEntityListener extends EntityListener {
+	public static class mmoPetEntityListener extends EntityListener {
 
 		@Override
-		public void onEntityTame(EntityTameEvent event) {
-			LivingEntity entity = (LivingEntity) event.getEntity();
-			mmo.setTitle(entity, mmo.getSimpleName(entity, true));
+		public void onEntityTame(final EntityTameEvent event) {
+			server.getScheduler().scheduleSyncDelayedTask(mmo.plugin,
+					  new Runnable() {
+
+						  @Override
+						  public void run() {
+							  LivingEntity entity = (LivingEntity) event.getEntity();
+							  mmo.setTitle(entity, mmo.getSimpleName(entity, true));
+						  }
+					  });
 		}
 	}
 
-	public class mmoSpoutListener extends SpoutListener {
+	public static class mmoSpoutListener extends SpoutListener {
 
 		@Override
 		public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
 			Player player = event.getPlayer();
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
 				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
-					if (player.equals(((Tameable)entity).getOwner())) {
+					if (player.equals(((Tameable) entity).getOwner())) {
 						mmo.setTitle(entity, mmo.getSimpleName(entity, true));
 					} else {
 						mmo.setTitle(player, entity, mmo.getSimpleName(entity, true));
