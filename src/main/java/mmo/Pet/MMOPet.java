@@ -16,7 +16,7 @@
  */
 package mmo.Pet;
 
-import mmo.Core.mmo;
+import mmo.Core.MMO;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.LivingEntity;
@@ -33,13 +33,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.event.spout.SpoutListener;
 
-public class mmoPet extends JavaPlugin {
+public class MMOPet extends JavaPlugin {
 
 	protected static Server server;
 	protected static PluginManager pm;
 	protected static PluginDescriptionFile description;
-	protected static mmo mmo;
-	private int updateTask;
+	protected static MMO mmo;
 
 	@Override
 	public void onEnable() {
@@ -47,8 +46,8 @@ public class mmoPet extends JavaPlugin {
 		pm = server.getPluginManager();
 		description = getDescription();
 
-		mmo = mmo.create(this);
-		mmo.mmoPet = true;
+		mmo = MMO.create(this);
+		MMO.mmoPet = true;
 		mmo.setPluginName("Pet");
 
 		mmo.log("loading " + description.getFullName());
@@ -69,7 +68,7 @@ public class mmoPet extends JavaPlugin {
 		for (Player player : server.getOnlinePlayers()) {
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
 				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
-					mmo.setTitle(player, entity, mmo.getSimpleName(entity, true));
+					mmo.setTitle(player, entity, MMO.getSimpleName(entity, true));
 				}
 			}
 		}
@@ -79,7 +78,7 @@ public class mmoPet extends JavaPlugin {
 	public void onDisable() {
 		mmo.log("Disabled " + description.getFullName());
 		mmo.autoUpdate();
-		mmo.mmoPet = false;
+		MMO.mmoPet = false;
 	}
 
 	public static class mmoPetEntityListener extends EntityListener {
@@ -92,7 +91,7 @@ public class mmoPet extends JavaPlugin {
 						  @Override
 						  public void run() {
 							  LivingEntity entity = (LivingEntity) event.getEntity();
-							  mmo.setTitle(entity, mmo.getSimpleName(entity, true));
+							  mmo.setTitle(entity, MMO.getSimpleName(entity, true));
 						  }
 					  });
 		}
@@ -106,9 +105,9 @@ public class mmoPet extends JavaPlugin {
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
 				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
 					if (player.equals(((Tameable) entity).getOwner())) {
-						mmo.setTitle(entity, mmo.getSimpleName(entity, true));
+						mmo.setTitle(entity, MMO.getSimpleName(entity, true));
 					} else {
-						mmo.setTitle(player, entity, mmo.getSimpleName(entity, true));
+						mmo.setTitle(player, entity, MMO.getSimpleName(entity, true));
 					}
 				}
 			}
