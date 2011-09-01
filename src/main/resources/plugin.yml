@@ -1,5 +1,5 @@
 name: mmoPet
-main: mmo.Pet.mmoPet
+main: mmo.Pet.MMOPet
 version: 0.2
 website: http://forums.bukkit.org/threads/33291/
 author: Rycochet <rycochet@rycochet.com>
