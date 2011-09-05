@@ -17,8 +17,7 @@
 package mmo.Pet;
 
 import mmo.Core.MMO;
-import org.bukkit.Material;
-import org.bukkit.Server;
+import mmo.Core.MMOPlugin;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -27,37 +26,18 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
 import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.config.Configuration;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.event.spout.SpoutListener;
 
-public class MMOPet extends JavaPlugin {
+public class MMOPet extends MMOPlugin {
 
-	protected static Server server;
-	protected static PluginManager pm;
-	protected static PluginDescriptionFile description;
-	protected static MMO mmo;
-
+	static int config_max_per_player = 1;
+	
 	@Override
 	public void onEnable() {
-		server = getServer();
-		pm = server.getPluginManager();
-		description = getDescription();
-
-		mmo = MMO.create(this);
+		super.onEnable();
 		MMO.mmoPet = true;
-		mmo.setPluginName("Pet");
-
-		mmo.log("loading " + description.getFullName());
-
-		mmo.cfg.getBoolean("auto_update", true);
-		mmo.cfg.getInt("max_per_player", 1);
-		mmo.cfg.getInt("Wolf.train." + Material.BONE.getId(), 75);
-		mmo.cfg.getInt("Wolf.food." + Material.PORK.getId(), 20);
-		mmo.cfg.getInt("Spider.train." + Material.SUGAR.getId(), 15);
-		mmo.cfg.save();
 
 		mmoSpoutListener sl = new mmoSpoutListener();
 		pm.registerEvent(Type.CUSTOM_EVENT, sl, Priority.Normal, this);
@@ -68,36 +48,44 @@ public class MMOPet extends JavaPlugin {
 		for (Player player : server.getOnlinePlayers()) {
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
 				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
-					mmo.setTitle(player, entity, MMO.getSimpleName(entity, true));
+					setTitle(player, entity, MMO.getSimpleName(entity, true));
 				}
 			}
 		}
 	}
 
 	@Override
-	public void onDisable() {
-		mmo.log("Disabled " + description.getFullName());
-		mmo.autoUpdate();
-		MMO.mmoPet = false;
+	public void loadConfiguration(Configuration cfg) {
+		config_max_per_player = cfg.getInt("max_per_player", config_max_per_player);
+//		cfg.getInt("Wolf.train." + Material.BONE.getId(), 75);
+//		cfg.getInt("Wolf.food." + Material.PORK.getId(), 20);
+//		cfg.getInt("Spider.train." + Material.SUGAR.getId(), 15);
 	}
 
-	public static class mmoPetEntityListener extends EntityListener {
+	@Override
+	public void onDisable() {
+//		mmo.autoUpdate();
+		MMO.mmoPet = false;
+		super.onDisable();
+	}
+
+	public class mmoPetEntityListener extends EntityListener {
 
 		@Override
 		public void onEntityTame(final EntityTameEvent event) {
-			server.getScheduler().scheduleSyncDelayedTask(mmo.plugin,
+			getServer().getScheduler().scheduleSyncDelayedTask(plugin,
 					  new Runnable() {
 
 						  @Override
 						  public void run() {
 							  LivingEntity entity = (LivingEntity) event.getEntity();
-							  mmo.setTitle(entity, MMO.getSimpleName(entity, true));
+							  setTitle(entity, MMO.getSimpleName(entity, true));
 						  }
 					  });
 		}
 	}
 
-	public static class mmoSpoutListener extends SpoutListener {
+	public class mmoSpoutListener extends SpoutListener {
 
 		@Override
 		public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
@@ -105,9 +93,9 @@ public class MMOPet extends JavaPlugin {
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
 				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
 					if (player.equals(((Tameable) entity).getOwner())) {
-						mmo.setTitle(entity, MMO.getSimpleName(entity, true));
+						setTitle(entity, MMO.getSimpleName(entity, true));
 					} else {
-						mmo.setTitle(player, entity, MMO.getSimpleName(entity, true));
+						setTitle(player, entity, MMO.getSimpleName(entity, true));
 					}
 				}
 			}
