@@ -64,7 +64,6 @@ public class MMOPet extends MMOPlugin {
 
 	@Override
 	public void onDisable() {
-//		mmo.autoUpdate();
 		MMO.mmoPet = false;
 		super.onDisable();
 	}
