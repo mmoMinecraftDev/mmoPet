@@ -37,7 +37,6 @@ public class MMOPet extends MMOPlugin {
 	@Override
 	public void onEnable() {
 		super.onEnable();
-		MMO.mmoPet = true;
 
 		mmoSpoutListener sl = new mmoSpoutListener();
 		pm.registerEvent(Type.CUSTOM_EVENT, sl, Priority.Normal, this);
@@ -60,12 +59,6 @@ public class MMOPet extends MMOPlugin {
 //		cfg.getInt("Wolf.train." + Material.BONE.getId(), 75);
 //		cfg.getInt("Wolf.food." + Material.PORK.getId(), 20);
 //		cfg.getInt("Spider.train." + Material.SUGAR.getId(), 15);
-	}
-
-	@Override
-	public void onDisable() {
-		MMO.mmoPet = false;
-		super.onDisable();
 	}
 
 	public class mmoPetEntityListener extends EntityListener {
