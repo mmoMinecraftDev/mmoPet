@@ -1,6 +1,6 @@
 name: mmoPet
 main: mmo.Pet.MMOPet
-version: 0.4
+version: 0.5
 website: http://forums.bukkit.org/threads/33291/
 author: Rycochet <rycochet@rycochet.com>
 depend: [Spout,mmoCore]
