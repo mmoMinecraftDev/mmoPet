@@ -18,31 +18,26 @@ package mmo.Pet;
 
 import mmo.Core.MMO;
 import mmo.Core.MMOPlugin;
+
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
-import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.util.config.Configuration;
+
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.event.spout.SpoutListener;
 
 public class MMOPet extends MMOPlugin {
-
 	static int config_max_per_player = 1;
-	
+
 	@Override
 	public void onEnable() {
 		super.onEnable();
 
-		mmoSpoutListener sl = new mmoSpoutListener();
-		pm.registerEvent(Type.CUSTOM_EVENT, sl, Priority.Normal, this);
-
-		mmoPetEntityListener pel = new mmoPetEntityListener();
-		pm.registerEvent(Type.ENTITY_TAME, pel, Priority.Highest, this);
+		pm.registerEvents(new mmoListener(), this);
 
 		for (Player player : server.getOnlinePlayers()) {
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
@@ -54,32 +49,15 @@ public class MMOPet extends MMOPlugin {
 	}
 
 	@Override
-	public void loadConfiguration(Configuration cfg) {
+	public void loadConfiguration(FileConfiguration cfg) {
 		config_max_per_player = cfg.getInt("max_per_player", config_max_per_player);
-//		cfg.getInt("Wolf.train." + Material.BONE.getId(), 75);
-//		cfg.getInt("Wolf.food." + Material.PORK.getId(), 20);
-//		cfg.getInt("Spider.train." + Material.SUGAR.getId(), 15);
+		//		cfg.getInt("Wolf.train." + Material.BONE.getId(), 75);
+		//		cfg.getInt("Wolf.food." + Material.PORK.getId(), 20);
+		//		cfg.getInt("Spider.train." + Material.SUGAR.getId(), 15);
 	}
 
-	public class mmoPetEntityListener extends EntityListener {
-
-		@Override
-		public void onEntityTame(final EntityTameEvent event) {
-			getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-					  new Runnable() {
-
-						  @Override
-						  public void run() {
-							  LivingEntity entity = (LivingEntity) event.getEntity();
-							  setTitle(entity, MMO.getSimpleName(entity, true));
-						  }
-					  });
-		}
-	}
-
-	public class mmoSpoutListener extends SpoutListener {
-
-		@Override
+	public class mmoListener implements Listener {
+		@EventHandler
 		public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
 			Player player = event.getPlayer();
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
@@ -91,6 +69,18 @@ public class MMOPet extends MMOPlugin {
 					}
 				}
 			}
+		}
+
+		@EventHandler
+		public void onEntityTame(final EntityTameEvent event) {
+			getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+					new Runnable() {
+						@Override
+						public void run() {
+							LivingEntity entity = (LivingEntity) event.getEntity();
+							setTitle(entity, MMO.getSimpleName(entity, true));
+						}
+					});
 		}
 	}
 }
