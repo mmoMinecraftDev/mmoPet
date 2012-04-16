@@ -23,7 +23,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTameEvent;
@@ -41,7 +40,7 @@ public class MMOPet extends MMOPlugin {
 
 		for (Player player : server.getOnlinePlayers()) {
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
-				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
+				if (entity instanceof Tameable && ((Tameable) entity).isTamed()) {
 					setTitle(player, entity, MMO.getSimpleName(entity, true));
 				}
 			}
@@ -61,7 +60,7 @@ public class MMOPet extends MMOPlugin {
 		public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
 			Player player = event.getPlayer();
 			for (LivingEntity entity : player.getWorld().getLivingEntities()) {
-				if (entity instanceof Wolf && ((Tameable) entity).isTamed()) {
+				if (entity instanceof Tameable && ((Tameable) entity).isTamed()) {
 					if (player.equals(((Tameable) entity).getOwner())) {
 						setTitle(entity, MMO.getSimpleName(entity, true));
 					} else {
