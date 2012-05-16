@@ -1,8 +1,8 @@
 name: mmoPet
-main: mmo.Pet.MMOPet
-version: 0.5
-website: http://forums.bukkit.org/threads/33291/
-author: Rycochet <rycochet@rycochet.com>
-depend: [Spout,mmoCore]
+version: ${releaseVersion} b${buildNumber}
+description: Give owned wolves a title.
+author: mmoMinecraftDev
+website: http://mmo.me.uk
 
-description: Display pet names above them.
+main: mmo.Pet.MMOPet
+depend: [Spout, mmoCore]
