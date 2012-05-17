@@ -1,5 +1,5 @@
 name: mmoPet
-version: ${releaseVersion} b${buildNumber}
+version: ${releaseVersion}.${buildNumber}
 description: Give owned wolves a title.
 author: mmoMinecraftDev
 website: http://mmo.me.uk
