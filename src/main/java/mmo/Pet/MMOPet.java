@@ -18,6 +18,7 @@ package mmo.Pet;
 
 import mmo.Core.MMO;
 import mmo.Core.MMOPlugin;
+import mmo.Core.util.EnumBitSet;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -32,6 +33,11 @@ import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 public class MMOPet extends MMOPlugin {
 	static int config_max_per_player = 1;
 
+	public EnumBitSet mmoSupport(EnumBitSet support)
+	{
+		support.set(MMOPlugin.Support.MMO_AUTO_EXTRACT);
+		return support;
+	}
 	@Override
 	public void onEnable() {
 		super.onEnable();

@@ -5,7 +5,7 @@
 	<name>mmoPet</name>
 	<groupId>mmo.Pet</groupId>
 	<artifactId>mmoPet</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.6-SNAPSHOT</version>
 	<url>http://github.com/mmoMinecraftDev/mmoPet</url>
 	<description>Give owned wolves a title.</description>
 
